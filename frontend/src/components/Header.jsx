@@ -1,3 +1,7 @@
+const API_DOCS_URL = import.meta.env.DEV
+  ? "http://localhost:8000/docs"
+  : "/docs";
+
 export default function Header() {
   return (
     <header className="header">
@@ -7,7 +11,7 @@ export default function Header() {
       </div>
       <a
         className="api-link"
-        href="http://localhost:8000/docs"
+        href={API_DOCS_URL}
         target="_blank"
         rel="noreferrer"
       >
