@@ -147,8 +147,7 @@ cd frontend
 npm run dev
 ```
 
-- React app: http://localhost:5173
-- FastAPI API: http://localhost:8000
+
 
 Vite proxies every `/api` request to FastAPI, so the frontend uses clean
 relative URLs.
