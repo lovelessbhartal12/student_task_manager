@@ -214,3 +214,51 @@ def test_stats_update_after_delete(client):
 
     response = client.get("/api/todos/stats")
     assert response.json()["total_tasks"] == 0
+
+
+def test_update_todo_blank_title_rejected(client):
+    """Updating a todo with a blank title must be rejected with 422."""
+    created = client.post("/api/todos", json=VALID_TODO).json()
+
+    response = client.put(
+        f"/api/todos/{created['id']}",
+        json={
+            "title": "   ",
+            "description": "Updated description",
+            "priority": "Medium",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_update_todo_invalid_priority_rejected(client):
+    """Updating a todo with an invalid priority must be rejected with 422."""
+    created = client.post("/api/todos", json=VALID_TODO).json()
+
+    response = client.put(
+        f"/api/todos/{created['id']}",
+        json={
+            "title": "Updated task",
+            "description": "Updated description",
+            "priority": "Urgent",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_update_todo_title_too_long_rejected(client):
+    """Updating a todo with a title longer than 200 characters must be rejected."""
+    created = client.post("/api/todos", json=VALID_TODO).json()
+
+    response = client.put(
+        f"/api/todos/{created['id']}",
+        json={
+            "title": "x" * 201,
+            "description": "Updated description",
+            "priority": "Medium",
+        },
+    )
+
+    assert response.status_code == 422
